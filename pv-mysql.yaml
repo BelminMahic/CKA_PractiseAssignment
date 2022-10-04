@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-mysql
+  namespace: cka
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: /data_mysql
+  persistentVolumeReclaimPolicy: Recycle
+  claimRef:
+    name: pvc-mysql
+    namespace: cka

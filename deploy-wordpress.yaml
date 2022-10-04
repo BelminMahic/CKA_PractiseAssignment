@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress
+  namespace: cka
+spec:
+  replicas: 3
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: wordpress
+  template:
+    metadata:
+      labels:
+        app: wordpress
+    spec:
+      containers:
+      - name: wordpress
+        image: wordpress:4.8-apache
+        resources:
+          limits:
+            memory: "64Mi"
+            cpu: "10m"
+        ports:
+        - containerPort: 80
+        env:
+          - name: DB_HOST
+            value: mysql
+        envFrom:
+          - secretRef:
+              name: mysql-password
+        livenessProbe:
+          exec:
+            command:
+              - "sleep"
+              - "5000"
+              - "curl /readme.html:80"
+        
+

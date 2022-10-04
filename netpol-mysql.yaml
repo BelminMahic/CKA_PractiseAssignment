@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: netpol-mysql
+  namespace: cka
+spec:
+  podSelector:
+    matchLabels:
+      app: mysql
+  policyTypes:
+    - "Ingress"
+  ingress:
+    - from:
+        - ipBlock:
+            cidr: 10.0.0.0/8
+        - podSelector:
+            matchLabels:
+              app: wordpress
+      ports:
+        - protocol: TCP
+          port: 3306    
